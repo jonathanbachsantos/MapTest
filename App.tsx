@@ -58,7 +58,7 @@ export default function App() {
       country.data.findIndex((d, _) => d[stat] >= 10) != -1
     );
 
-    return countriesWithAvg
+    return onlyCountriesWithData
   }, []);
 
   const maxY = useMemo(() => {

@@ -6,10 +6,21 @@ import * as d3 from "d3";
 //CONSTANTS
 import { COUNTRIES } from "../constants/CountryShapes";
 
+import { PanGestureHandler } from 'react-native-gesture-handler';
+
 const Map = props => {
-   const { dimensions, data, date, colorize, stat} = props;
+   const { dimensions, data, date, colorize, stat } = props;
 
    const [countryList, setCountryList] = useState([]);
+   const [translateX, setTranslateX] = useState(0);
+   const [translateY, setTranslateY] = useState(0);
+
+
+   const panGestureHandler = event => {
+      console.log(event.nativeEvent.translateX)
+      setTranslateX(100)
+      setTranslateY(500)
+   }
 
    const mapExtent = useMemo(() => {
       return dimensions.width > dimensions.height / 2
@@ -55,8 +66,8 @@ const Map = props => {
                   stroke={"#aaa"}
                   strokeOpacity={0.3}
                   strokeWidth={0.6}
-                  fill={isDataAvailable ? "#697803" : "#aaa"} //colorize(curCountryData[dateIndex][stat])
-                  opacity={isDataAvailable? 1 : 0.4}
+                  fill={isDataAvailable ? colorize(curCountryData[dateIndex][stat]) : "#aaa"} //
+                  opacity={isDataAvailable ? 1 : 0.4}
                />
             )
          })
@@ -64,20 +75,24 @@ const Map = props => {
    }, []);
    return (
       <View>
-         <Svg
-            width={dimensions.width}
-            height={dimensions.height / 2}
+         <PanGestureHandler
+            onGestureEvent={(e) => panGestureHandler(e)}
          >
-            <G>
-               <Circle
-                  cx={dimensions.width / 2}
-                  cy={mapExtent / 2}
-                  r={mapExtent / 2}
-                  fill={"#3b454f"}
-               />
-               {countryList.map(x => x)}
-            </G>
-         </Svg>
+            <Svg
+               width={dimensions.width}
+               height={dimensions.height / 2}
+            >
+               <G transform={`translate(${translateX}, ${translateY})`}>
+                  <Circle
+                     cx={dimensions.width / 2}
+                     cy={mapExtent / 2}
+                     r={mapExtent / 2}
+                     fill={"#3b454f"}
+                  />
+                  {countryList.map(x => x)}
+               </G>
+            </Svg>
+         </PanGestureHandler>
       </View>
    );
 };
