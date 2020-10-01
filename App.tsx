@@ -72,8 +72,6 @@ export default function App() {
     return colorScale;
   }, []);
 
-  console.log(colorize)
-
   return (
     <View style={styles.container}>
       <Map
