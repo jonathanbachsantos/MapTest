@@ -98,9 +98,7 @@ const Map = props => {
    }, [dimensions]);
 
    const countryPaths = useMemo(() => {
-      const projection = d3.geoAzimuthalEqualArea()
-         .rotate([0, -90])
-         .clipAngle(150)
+      const projection = d3.geoNaturalEarth1()
          .fitSize([mapExtent, mapExtent], { type: "FeatureCollection", features: COUNTRIES })
          .translate([dimensions.width / 2, mapExtent / 2]);
       const geoPath = d3.geoPath().projection(projection);
@@ -152,20 +150,17 @@ const Map = props => {
                onGestureEvent={(e) => pinchGestureHandler(e)}
                onHandlerStateChange={(e) => pinchStateHandler(e)}
             >
-               <Svg
-                  width={dimensions.width}
-                  height={dimensions.height / 2}
-               >
-                  <G transform={`scale(${scale}) translate(${-translateX}, ${-translateY})`}>
-                     <Circle
-                        cx={dimensions.width / 2}
-                        cy={mapExtent / 2}
-                        r={mapExtent / 2}
-                        fill={"#3b454f"}
-                     />
-                     {countryList.map(x => x)}
-                  </G>
-               </Svg>
+               <View>
+                  <Svg
+                     width={dimensions.width}
+                     height={dimensions.height*0.9}
+                  >
+                     <G transform={`scale(${scale}) translate(${-translateX}, ${-translateY})`}>
+                       
+                        {countryList.map(x => x)}
+                     </G>
+                  </Svg>
+               </View>
             </PinchGestureHandler>
          </PanGestureHandler>
          <Button

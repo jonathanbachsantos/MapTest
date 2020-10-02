@@ -14,7 +14,7 @@ export default function App() {
   const dimensions = Dimensions.get("window");
 
   const [stat, setStat] = useState("New_cases");
-  const [date, setDate] = useState("2020-04-24");
+  const [date, setDate] = useState("2020-03-11");
 
   interface CovidData {
     Date_reported:string,
